@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Customer\DeveloperServer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tourism.IServer\Tourism.IServer.csproj" />
+    <ProjectReference Include="..\Tourism.QueryModel\Tourism.QueryModel.csproj" />
+    <ProjectReference Include="..\Tourism.Repository\Tourism.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Tourism.Test": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "键": "值",
+        "VSTEST_CONNECTION_TIMEOUT": "6000"
+      },
+      "nativeDebugging": true
+    }
+  }
+}
