@@ -5,6 +5,7 @@
         TravelService,
         CommonService,
         CustomerService,
-        MongodServer
+        MongodServer,
+        MediaServer
     }
 }

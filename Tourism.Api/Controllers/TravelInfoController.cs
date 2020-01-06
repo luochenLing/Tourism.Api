@@ -1,6 +1,8 @@
 ﻿using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using Tourism.Util;
 
 namespace Tourism.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TravelInfoController : ControllerBase
@@ -21,11 +24,12 @@ namespace Tourism.Api.Controllers
         private readonly ISettingService _settingService;
         private readonly ICouponService _couponService;
         private readonly IAdministrativeAreaService _administrativeAreaService;
+        private readonly IMediaInfoService _mediaInfoService;
 
         private readonly ILog _log;
         private readonly ConfigurationManager _configurationManager;
         private dynamic _result;
-        public TravelInfoController(ITravelInfoService travelInfoService, ISettingService settingService, ICouponService couponService, IAdministrativeAreaService administrativeAreaService)
+        public TravelInfoController(ITravelInfoService travelInfoService, ISettingService settingService, ICouponService couponService, IAdministrativeAreaService administrativeAreaService, IMediaInfoService mediaInfoService)
         {
             _log = LogManager.GetLogger(typeof(TravelInfoController));
             _configurationManager = new ConfigurationManager();
@@ -33,6 +37,7 @@ namespace Tourism.Api.Controllers
             _settingService = settingService;
             _couponService = couponService;
             _administrativeAreaService = administrativeAreaService;
+            _mediaInfoService = mediaInfoService;
         }
 
         [HttpGet]
@@ -446,6 +451,35 @@ namespace Tourism.Api.Controllers
             catch (Exception ex)
             {
                 _log.Error("GetHotCityList method error:" + ex);
+                _result.code = (int)HttpStatusCode.InternalServerError;
+                _result.msg = "fail";
+                _result.resultData = null;
+                return StatusCode(_result.code, _result);
+            }
+        }
+
+        /// <summary>
+        /// 根据产品ID查找媒体信息列表
+        /// </summary>
+        /// <param name="proId"></param>
+        /// <returns></returns>
+        [HttpPost("GetMediaInfoListById")]
+        public async Task<IActionResult> GetMediaInfoListById(string proId)
+        {
+            _result = new ResultObject<MediaInfo>();
+            try
+            {
+                var url = _configurationManager.GetSection(ConfigEnum.MediaUrl.ToString());
+                var res = await _mediaInfoService.GetMediaInfoListById(proId);
+                res.ToList().ForEach(x => x.MUrl = url + "\\" + (x.MUrl));
+                _result.code = (int)HttpStatusCode.OK;
+                _result.msg = "success";
+                _result.resultData = res;
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("GetMediaInfoListById method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;

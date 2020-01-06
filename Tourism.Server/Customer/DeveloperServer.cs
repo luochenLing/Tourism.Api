@@ -1,39 +1,29 @@
 ﻿using log4net;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Tourism.DBContext;
-using Tourism.DBContext.Customer;
-using Tourism.IServer.Customer;
+using Tourism.Eums;
+using Tourism.IServer;
 using Tourism.Model;
 using Tourism.QueryModel;
-using Tourism.Repository.MySql;
+using Tourism.Repository;
+using Tourism.Util;
 
-namespace Tourism.Server.Customer
+namespace Tourism.Server
 {
     public class DeveloperServer : IDeveloperServer
     {
         private readonly ILog _log;
-        private readonly MySqlRespository _mysqlRespository;
+        private readonly IMySqlRespostitoryByDapper _mysqlRespository;
 
         public DeveloperServer()
         {
-            if (_log == null)
-            {
-                _log = LogManager.GetLogger(typeof(CustomerServer));
-            }
-
-            if (_mysqlRespository == null)
-            {
-                MySqlContext context = new CustomerContext();
-                _mysqlRespository = new MySqlRespository(context);
-            }
+            _log = LogManager.GetLogger(typeof(CustomerServer));
+            _mysqlRespository = new MySqlRespostitoryByDapper(DbNameEnum.CustomerService.ToString());
         }
 
         /// <summary>
-        /// 根据账号查找开发者信息
+        /// 根据账号信息查找开发者信息
         /// </summary>
         /// <param name="query">查询条件</param>
         /// <returns></returns>
@@ -41,12 +31,14 @@ namespace Tourism.Server.Customer
         {
             try
             {
-                _log.Debug("AddCustomerInfoAsync receive param:" + JsonConvert.SerializeObject(query));
-                if (string.IsNullOrWhiteSpace(query.ClientName) || string.IsNullOrWhiteSpace(query.ClientSecret))
+                _log.Debug("GetDeveloperByAccount receive param:" + JsonConvert.SerializeObject(query));
+                if (string.IsNullOrWhiteSpace(query.Name) || string.IsNullOrWhiteSpace(query.Secret))
                 {
-                    throw new Exception("ClientName or ClientSecret is not empty");
+                    throw new Exception("Name or Secret is not empty");
                 }
-                return await _mysqlRespository.QueryInfo<Developer>(t => t.ClientName == query.ClientName && t.ClientSecret == query.ClientSecret).FirstOrDefaultAsync();
+                string sql = "SELECT * FROM Developer WHERE name=@Name AND secret=@Secret";
+                var info = MapperManager.SetMapper<Developer, DeveloperQuery>(query);
+                return await _mysqlRespository.QueryInfoAsync(sql, info);
             }
             catch (Exception ex)
             {

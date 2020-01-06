@@ -1,4 +1,6 @@
-﻿namespace Tourism.QueryModel
+﻿using System;
+
+namespace Tourism.QueryModel
 {
     /// <summary>
     /// 产品媒体
@@ -18,7 +20,7 @@
         /// <summary>
         /// 对应产品ID
         /// </summary>
-        public string MPid { get; set; }
+        public Guid MPid { get; set; }
 
         /// <summary>
         /// 图像/视频描述
@@ -28,6 +30,6 @@
         /// <summary>
         /// 业务类型
         /// </summary>
-        public string MType { get; set; }
+        public int MType { get; set; }
     }
 }

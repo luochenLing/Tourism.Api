@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tourism.Api\Tourism.Api.csproj" />
+    <ProjectReference Include="..\Tourism.Idp\Tourism.Idp.csproj" />
     <ProjectReference Include="..\Tourism.Repository\Tourism.Repository.csproj" />
     <ProjectReference Include="..\Tourism.Server\Tourism.Server.csproj" />
   </ItemGroup>

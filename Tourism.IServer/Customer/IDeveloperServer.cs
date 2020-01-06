@@ -2,7 +2,7 @@
 using Tourism.Model;
 using Tourism.QueryModel;
 
-namespace Tourism.IServer.Customer
+namespace Tourism.IServer
 {
     public interface IDeveloperServer
     {

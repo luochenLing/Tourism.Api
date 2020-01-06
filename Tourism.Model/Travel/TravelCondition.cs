@@ -28,6 +28,11 @@ namespace Tourism.Model
         public string Field { get; set; }
 
         /// <summary>
+        /// 条件内容
+        /// </summary>
+        public string Content { get; set; }
+
+        /// <summary>
         /// 备注
         /// </summary>
         public string Remarks { get; set; }

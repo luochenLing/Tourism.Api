@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tourism.Model
@@ -16,14 +17,14 @@ namespace Tourism.Model
         public int MId { get; set; }
 
         /// <summary>
-        /// 媒体路径
+        /// 媒体路径，只是图片的名称，具体路径写到配置文件
         /// </summary>
         public string MUrl { get; set; }
 
         /// <summary>
         /// 对应产品ID
         /// </summary>
-        public string MPid { get; set; }
+        public Guid MPid { get; set; }
 
         /// <summary>
         /// 图像/视频描述
@@ -33,6 +34,6 @@ namespace Tourism.Model
         /// <summary>
         /// 业务类型
         /// </summary>
-        public string MType { get; set; }
+        public int MType { get; set; }
     }
 }

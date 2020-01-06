@@ -6,3 +6,6 @@ appsettings.Development.json
 *.user
 *.pubxml.user
 *.pubxml
+log
+*.vsconfig
+*.rsa

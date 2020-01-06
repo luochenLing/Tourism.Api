@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tourism.Repository.MySql;
+using Tourism.Util;
 
 namespace Tourism.Repository
 {

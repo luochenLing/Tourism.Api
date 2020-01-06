@@ -7,10 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Reflection;
+using Tourism.Idp.ConfigurationStore;
 using Tourism.IServer;
 using Tourism.Server;
 
-namespace Tourism.Api
+namespace Tourism.Idp
 {
     public class Startup
     {
@@ -27,21 +28,16 @@ namespace Tourism.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //services.AddAuthorization();
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(option =>
-                {
-                    option.Authority = Configuration.GetSection("IdpUrl")?.Value;
-                    option.RequireHttpsMetadata = false;
-                    option.ApiName = Configuration.GetSection("ApiKey")?.Value;
-                });
-            services.AddSingleton<ITravelInfoService, TravelInfoService>();
-            services.AddSingleton<ISettingService, SettingService>();
-            services.AddSingleton<ICouponService, CouponService>();
-            services.AddSingleton<IAdministrativeAreaService, AdministrativeAreaService>();
-            services.AddSingleton<IMediaInfoService, MediaInfoService>();
-        }
+            services.AddIdentityServer()
+               .AddDeveloperSigningCredential()
+               .AddResourceOwnerValidator<ResourceOwnerValidator>()
+               .AddClientStore<ClientStore>()
+               .AddResourceStore<ResourceStore>();
 
+            services.AddSingleton<IDeveloperServer, DeveloperServer>();
+            services.AddSingleton<IClientConfigService, ClientConfigService>();
+            services.AddSingleton<IApiConfigService, ApiConfigService>();
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -55,9 +51,8 @@ namespace Tourism.Api
 
             app.UseRouting();
 
-            //二者缺一不可，UseAuthentication缺少，不能验证，UseAuthorization缺少，报错
-            app.UseAuthentication();//认证
-            app.UseAuthorization();//授权
+            app.UseIdentityServer();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

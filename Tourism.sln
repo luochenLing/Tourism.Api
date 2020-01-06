@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourism.QueryModel", "Touri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourism.Test", "Tourism.Test\Tourism.Test.csproj", "{73CFB530-3B9F-4884-9539-55E01F07B4E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tourism.Api", "Tourism.Api\Tourism.Api.csproj", "{580F135C-1C06-48B1-86A8-6F304A04FE1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourism.Api", "Tourism.Api\Tourism.Api.csproj", "{580F135C-1C06-48B1-86A8-6F304A04FE1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tourism.Idp", "Tourism.Idp\Tourism.Idp.csproj", "{4528654D-5FA0-41B5-9894-EF39F265A366}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{580F135C-1C06-48B1-86A8-6F304A04FE1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{580F135C-1C06-48B1-86A8-6F304A04FE1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{580F135C-1C06-48B1-86A8-6F304A04FE1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4528654D-5FA0-41B5-9894-EF39F265A366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4528654D-5FA0-41B5-9894-EF39F265A366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4528654D-5FA0-41B5-9894-EF39F265A366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4528654D-5FA0-41B5-9894-EF39F265A366}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

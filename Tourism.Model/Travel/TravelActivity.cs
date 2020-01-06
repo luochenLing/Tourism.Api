@@ -8,7 +8,7 @@ namespace Tourism.Model
     public class TravelActivity
     {
         /// <summary>
-        /// 产品唯一标识GUID即产品编号
+        /// 产品活动ID
         /// </summary>
         [Key, Column(Order = 1)]
         public Guid Id { get; set; }

@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Tourism.Model;
-using Tourism.QueryModel;
 
 namespace Tourism.IServer
 {
     public interface IMediaInfoService
     {
         /// <summary>
-        /// 获取媒体列表
+        /// 根据产品ID查找媒体信息列表
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="proId"></param>
         /// <returns></returns>
-        List<MediaInfo> GetMediaInfoList(MediaQuery query);
+        Task<IEnumerable<MediaInfo>> GetMediaInfoListById(string proId);
     }
 }

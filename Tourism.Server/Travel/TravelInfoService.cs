@@ -33,7 +33,6 @@ namespace Tourism.Server
         {
             try
             {
-
                 string sql = "SELECT * FROM TravelInfo WHERE 1=1";
 
                 #region 条件
@@ -44,6 +43,7 @@ namespace Tourism.Server
 
                 if (!string.IsNullOrWhiteSpace(query.ProType))
                 {
+                    query.ProType = SqlHandler.ReplaceSQLChar(query.ProType);
                     query.ProType = $"%{query.ProType}%";
                     sql += " AND proType LIKE @ProType";
                 }
@@ -122,9 +122,11 @@ namespace Tourism.Server
 
                 if (!string.IsNullOrWhiteSpace(query.Sort))
                 {
+                    query.Sort = SqlHandler.ReplaceSQLChar(query.Sort);
                     sql += $" ORDER BY {query.Sort}";
                     if (!string.IsNullOrWhiteSpace(query.Order))
                     {
+                        query.Order = SqlHandler.ReplaceSQLChar(query.Order);
                         sql += $" {query.Order}";
                     }
                 }
@@ -135,7 +137,6 @@ namespace Tourism.Server
                     query.PageIndex = (query.PageIndex - 1) * query.PageSize;
                     sql += $" LIMIT {query.PageIndex},{query.PageSize}";
                 }
-
                 return await _mysqlRespository.QueryListAsync<TravelInfo, TravelInfoQuery>(sql, query);
 
             }
@@ -195,9 +196,11 @@ namespace Tourism.Server
 
                 if (!string.IsNullOrWhiteSpace(query.Sort))
                 {
+                    query.Sort = SqlHandler.ReplaceSQLChar(query.Sort);
                     sql += $" ORDER BY {query.Sort}";
                     if (!string.IsNullOrWhiteSpace(query.Order))
                     {
+                        query.Order = SqlHandler.ReplaceSQLChar(query.Order);
                         sql += $" {query.Order}";
                     }
                 }
@@ -224,12 +227,21 @@ namespace Tourism.Server
         /// <returns></returns>
         public async Task<IEnumerable<TravelInfo>> GetTravelListByAreaAsync(string areaCondition)
         {
-            areaCondition = $"%{areaCondition}%";
-            string sql = "SELECT * FROM TravelInfo WHERE 1=1 AND country LIKE @areaCondition OR city LIKE @areaCondition OR area LIKE @areaCondition";
-            var parameters = new DynamicParameters();
+            try
+            {
+                areaCondition = SqlHandler.ReplaceSQLChar(areaCondition);
+                areaCondition = $"%{areaCondition}%";
+                string sql = "SELECT * FROM TravelInfo WHERE 1=1 AND country LIKE @areaCondition OR city LIKE @areaCondition OR area LIKE @areaCondition";
+                var parameters = new DynamicParameters();
 
-            parameters.Add("@areaCondition", areaCondition);
-            return await _mysqlRespository.QueryListAsync<TravelInfo, DynamicParameters>(sql, parameters);
+                parameters.Add("@areaCondition", areaCondition);
+                return await _mysqlRespository.QueryListAsync<TravelInfo, DynamicParameters>(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("GetTravelListByAreaAsync method error:" + ex);
+                throw;
+            }
         }
 
         /// <summary>
