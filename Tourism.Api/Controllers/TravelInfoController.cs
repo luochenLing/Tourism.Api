@@ -50,8 +50,8 @@ namespace Tourism.Api.Controllers
         /// 获取首页轮播图
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetSwpierList")]
-        public async Task<IActionResult> GetSwpierList()
+        [HttpGet("GetSwpierListAsync")]
+        public async Task<IActionResult> GetSwpierListAsync()
         {
             _result = new ResultObject<Setting>();
             try
@@ -72,7 +72,7 @@ namespace Tourism.Api.Controllers
             }
             catch (Exception ex)
             {
-                _log.Error("GetSwpierList method error:" + ex);
+                _log.Error("GetSwpierListAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -84,8 +84,8 @@ namespace Tourism.Api.Controllers
         /// 根据地名查找商品列表
         /// </summary>
         /// <param name="areaName"></param>
-        [HttpPost("GetTravelListByArea")]
-        public async Task<IActionResult> GetTravelListByArea(string areaName)
+        [HttpPost("GetTravelListByAreaAsync")]
+        public async Task<IActionResult> GetTravelListByAreaAsync(string areaName)
         {
             _result = new ResultObject<TravelInfo>();
             try
@@ -107,7 +107,7 @@ namespace Tourism.Api.Controllers
             }
             catch (Exception ex)
             {
-                _log.Error("GetTravelListByArea method error:" + ex);
+                _log.Error("GetTravelListByAreaAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -120,8 +120,8 @@ namespace Tourism.Api.Controllers
         /// </summary>
         /// <param name="proType"></param>
         /// <returns></returns>
-        [HttpPost("GetTravelInfoListByProType")]
-        public async Task<IActionResult> GetTravelInfoListByProType(string proType)
+        [HttpPost("GetTravelInfoListByProTypeAsync")]
+        public async Task<IActionResult> GetTravelInfoListByProTypeAsync(string proType)
         {
             _result = new ResultObject<TravelInfo>();
 
@@ -156,7 +156,7 @@ namespace Tourism.Api.Controllers
             }
             catch (Exception ex)
             {
-                _log.Error("GetTravelInfoListByProType method error:" + ex);
+                _log.Error("GetTravelInfoListByProTypeAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -169,8 +169,8 @@ namespace Tourism.Api.Controllers
         /// </summary>
         /// <param name="frontier">0 境内 1 境外</param>
         /// <returns></returns>
-        [HttpPost("GetTravelInfoListByFrontier")]
-        public async Task<IActionResult> GetTravelInfoListByFrontier(string frontier)
+        [HttpPost("GetTravelInfoListByFrontierAsync")]
+        public async Task<IActionResult> GetTravelInfoListByFrontierAsync(string frontier)
         {
             _result = new ResultObject<TravelInfo>();
             try
@@ -208,7 +208,7 @@ namespace Tourism.Api.Controllers
             }
             catch (Exception ex)
             {
-                _log.Error("GetTravelInfoListByFrontier method error:" + ex);
+                _log.Error("GetTravelInfoListByFrontierAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -221,8 +221,8 @@ namespace Tourism.Api.Controllers
         /// </summary>
         /// <param name="conditionQuery"></param>
         /// <returns></returns>
-        [HttpPost("GetTravelInfoListByFilter")]
-        public async Task<IActionResult> GetTravelInfoListByFilter(TravelConditionQuery conditionQuery)
+        [HttpPost("GetTravelInfoListByFilterAsync")]
+        public async Task<IActionResult> GetTravelInfoListByFilterAsync(TravelConditionQuery conditionQuery)
         {
             _result = new ResultObject<TravelInfo>();
 
@@ -277,7 +277,7 @@ namespace Tourism.Api.Controllers
             }
             catch (Exception ex)
             {
-                _log.Error("GetTravelInfoListByFilter method error:" + ex);
+                _log.Error("GetTravelInfoListByFilterAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -290,16 +290,16 @@ namespace Tourism.Api.Controllers
         /// </summary>
         /// <param name="areaName"></param>
         /// <returns></returns>
-        [HttpPost("RelatedProducts")]
-        public async Task<IActionResult> RelatedProducts(string areaName)
+        [HttpPost("RelatedProductsAsync")]
+        public async Task<IActionResult> RelatedProductsAsync(string areaName)
         {
             try
             {
-                return await GetTravelListByArea(areaName);
+                return await GetTravelListByAreaAsync(areaName);
             }
             catch (Exception ex)
             {
-                _log.Error("RelatedProducts method error:" + ex);
+                _log.Error("RelatedProductsAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -312,8 +312,8 @@ namespace Tourism.Api.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [HttpPost("GetCouponListByUserId")]
-        public async Task<IActionResult> GetCouponListByUserId(string userId)
+        [HttpPost("GetCouponListByUserIdAsync")]
+        public async Task<IActionResult> GetCouponListByUserIdAsync(string userId)
         {
             _result = new ResultObject<Coupon>();
             if (string.IsNullOrWhiteSpace(userId))
@@ -339,7 +339,7 @@ namespace Tourism.Api.Controllers
             }
             catch (Exception ex)
             {
-                _log.Error("GetCouponListByUserId method error:" + ex);
+                _log.Error("GetCouponListByUserIdAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -352,8 +352,8 @@ namespace Tourism.Api.Controllers
         /// </summary>
         /// <param name="proId"></param>
         /// <returns></returns>
-        [HttpPost("GetTravelInfoById")]
-        public async Task<IActionResult> GetTravelInfoById(string proId)
+        [HttpPost("GetTravelInfoByIdAsync")]
+        public async Task<IActionResult> GetTravelInfoByIdAsync(string proId)
         {
             _result = new ResultObject<TravelInfo>();
 
@@ -383,7 +383,7 @@ namespace Tourism.Api.Controllers
             }
             catch (Exception ex)
             {
-                _log.Error("GetTravelInfoById method error:" + ex);
+                _log.Error("GetTravelInfoByIdAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -391,14 +391,13 @@ namespace Tourism.Api.Controllers
             }
         }
 
-
         /// <summary>
         /// 根据产品ID获取产品活动列表
         /// </summary>
         /// <param name="proId"></param>
         /// <returns></returns>
-        [HttpPost("GetTravelActivityListByProId")]
-        public async Task<IActionResult> GetTravelActivityListByProId(string proId)
+        [HttpPost("GetTravelActivityListByProIdAsync")]
+        public async Task<IActionResult> GetTravelActivityListByProIdAsync(string proId)
         {
             _result = new ResultObject<TravelInfo>();
             if (string.IsNullOrWhiteSpace(proId))
@@ -418,11 +417,10 @@ namespace Tourism.Api.Controllers
                 _result.msg = "success";
                 _result.resultData = res;
                 return Ok(_result);
-
             }
             catch (Exception ex)
             {
-                _log.Error("GetTravelActivityListByProId method error:" + ex);
+                _log.Error("GetTravelActivityListByProIdAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -435,8 +433,8 @@ namespace Tourism.Api.Controllers
         /// </summary>
         /// <param name="proid"></param>
         /// <returns></returns>
-        [HttpGet("GetHotCityList")]
-        public async Task<IActionResult> GetHotCityList()
+        [HttpGet("GetHotCityListAsync")]
+        public async Task<IActionResult> GetHotCityListAsync()
         {
             _result = new ResultObject<HotCity>();
             try
@@ -450,7 +448,7 @@ namespace Tourism.Api.Controllers
             }
             catch (Exception ex)
             {
-                _log.Error("GetHotCityList method error:" + ex);
+                _log.Error("GetHotCityListAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;
@@ -463,8 +461,8 @@ namespace Tourism.Api.Controllers
         /// </summary>
         /// <param name="proId"></param>
         /// <returns></returns>
-        [HttpPost("GetMediaInfoListById")]
-        public async Task<IActionResult> GetMediaInfoListById(string proId)
+        [HttpPost("GetMediaInfoListByIdAsync")]
+        public async Task<IActionResult> GetMediaInfoListByIdAsync(string proId)
         {
             _result = new ResultObject<MediaInfo>();
             try
@@ -479,7 +477,34 @@ namespace Tourism.Api.Controllers
             }
             catch (Exception ex)
             {
-                _log.Error("GetMediaInfoListById method error:" + ex);
+                _log.Error("GetMediaInfoListByIdAsync method error:" + ex);
+                _result.code = (int)HttpStatusCode.InternalServerError;
+                _result.msg = "fail";
+                _result.resultData = null;
+                return StatusCode(_result.code, _result);
+            }
+        }
+
+        /// <summary>
+        /// 根据产品ID查找媒体信息列表
+        /// </summary>
+        /// <param name="proId"></param>
+        /// <returns></returns>
+        [HttpGet("GetTravelConditionListAsync")]
+        public async Task<IActionResult> GetTravelConditionListAsync(string proId)
+        {
+            _result = new ResultObject<TravelCondition>();
+            try
+            {
+                var res = await _travelInfoService.GetTravelConditionListAsync();
+                _result.code = (int)HttpStatusCode.OK;
+                _result.msg = "success";
+                _result.resultData = res;
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("GetTravelConditionListAsync method error:" + ex);
                 _result.code = (int)HttpStatusCode.InternalServerError;
                 _result.msg = "fail";
                 _result.resultData = null;

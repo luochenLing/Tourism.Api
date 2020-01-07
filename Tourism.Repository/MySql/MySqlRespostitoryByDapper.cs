@@ -72,7 +72,7 @@ namespace Tourism.Repository
         /// <typeparam name="T"></typeparam>
         /// <param name="selQuery">查询条件</param>
         /// <returns></returns>
-        public async Task<int> DelAsync<T>(string sql, T info) where T : class
+        public async Task<int> DelAsync<T>(string sql, T info=null) where T : class
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Tourism.Repository
         /// <param name="selQuery">查询条件</param>
         /// <param name="updateQuery">更新条件</param>
         /// <returns></returns>
-        public async Task<int> UpdateAsync<T>(string sql, T info) where T : class
+        public async Task<int> UpdateAsync<T>(string sql, T info=null) where T : class
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Tourism.Repository
         /// <param name="selQuery">查询条件</param>
         /// <param name="updateQuery">更新条件</param>
         /// <returns></returns>
-        public async Task<int> UpdateAsync<T>(string sql, List<T> info) where T : class
+        public async Task<int> UpdateAsync<T>(string sql, List<T> info=null) where T : class
         {
             try
             {
@@ -141,7 +141,7 @@ namespace Tourism.Repository
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<T> QueryInfoAsync<T>(string sql, T query) where T : class
+        public async Task<T> QueryInfoAsync<T>(string sql, T query=null) where T : class
         {
             try
             {
@@ -163,7 +163,7 @@ namespace Tourism.Repository
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<T>> QueryListAsync<T>(string sql, T info) where T : class
+        public async Task<IEnumerable<T>> QueryListAsync<T>(string sql, T info=null) where T : class
         {
             try
             {
@@ -187,7 +187,7 @@ namespace Tourism.Repository
         /// <param name="sql"></param>
         /// <param name="info"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<TModel>> QueryListAsync<TModel, TQuery>(string sql, TQuery info) where TModel : class where TQuery : class
+        public async Task<IEnumerable<TModel>> QueryListAsync<TModel, TQuery>(string sql, TQuery info=null) where TModel : class where TQuery : class
         {
             try
             {

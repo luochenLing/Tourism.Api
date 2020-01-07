@@ -231,7 +231,7 @@ namespace Tourism.Server
             {
                 areaCondition = SqlHandler.ReplaceSQLChar(areaCondition);
                 areaCondition = $"%{areaCondition}%";
-                string sql = "SELECT * FROM TravelInfo WHERE 1=1 AND country LIKE @areaCondition OR city LIKE @areaCondition OR area LIKE @areaCondition";
+                string sql = "SELECT * FROM TravelInfo WHERE country LIKE @areaCondition OR city LIKE @areaCondition OR area LIKE @areaCondition";
                 var parameters = new DynamicParameters();
 
                 parameters.Add("@areaCondition", areaCondition);
@@ -240,6 +240,25 @@ namespace Tourism.Server
             catch (Exception ex)
             {
                 _log.Error("GetTravelListByAreaAsync method error:" + ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 获取筛选条件
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<TravelCondition>> GetTravelConditionListAsync()
+        {
+            try
+            {
+                string sql = "SELECT * FROM TravelCondition";
+
+                return await _mysqlRespository.QueryListAsync<TravelCondition>(sql,null);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("GetTravelConditionListAsync method error:" + ex);
                 throw;
             }
         }

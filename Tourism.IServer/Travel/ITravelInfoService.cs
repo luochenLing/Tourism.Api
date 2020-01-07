@@ -35,5 +35,11 @@ namespace Tourism.IServer
         /// <returns></returns>
         Task<IEnumerable<TravelInfo>> GetTravelListByAreaAsync(string areaCondition);
 
+        /// <summary>
+        /// 获取筛选条件
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<TravelCondition>> GetTravelConditionListAsync();
+
     }
 }
