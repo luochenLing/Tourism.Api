@@ -15,7 +15,7 @@ namespace Tourism.Server
         private readonly ILog _log;
         private readonly IMySqlRespostitoryByDapper _mysqlRespository;
 
-        public MediaInfoService() 
+        public MediaInfoService()
         {
             _log = LogManager.GetLogger(typeof(MediaInfoService));
             _mysqlRespository = new MySqlRespostitoryByDapper(DbNameEnum.MediaServer.ToString());

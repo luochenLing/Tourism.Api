@@ -254,7 +254,7 @@ namespace Tourism.Server
             {
                 string sql = "SELECT * FROM TravelCondition";
 
-                return await _mysqlRespository.QueryListAsync<TravelCondition>(sql,null);
+                return await _mysqlRespository.QueryListAsync<TravelCondition>(sql, null);
             }
             catch (Exception ex)
             {

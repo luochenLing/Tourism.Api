@@ -47,7 +47,7 @@ namespace Tourism.Idp.ConfigurationStore
             try
             {
                 var res = await _apiConfigService.GetApiConfigsByScope(scopeNames.ToArray());
-                
+
                 if (res != null)
                 {
                     foreach (var item in res)
