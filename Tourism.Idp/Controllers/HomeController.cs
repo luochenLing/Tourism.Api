@@ -7,14 +7,9 @@ namespace Tourism.Idp.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        public IConfiguration _config;
-        public HomeController(IConfiguration config)
-        {
-            _config = config;
-        }
         public IActionResult Index()
         {
-            return Ok(_config.GetSection("AllowedHosts"));
+            return Ok("identityservice4身份验证服务");
         }
     }
 }

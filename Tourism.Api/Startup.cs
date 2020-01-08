@@ -9,6 +9,8 @@ using System.IO;
 using System.Reflection;
 using Tourism.IServer;
 using Tourism.Server;
+using Microsoft.OpenApi.Models;
+using System;
 
 namespace Tourism.Api
 {
@@ -35,6 +37,17 @@ namespace Tourism.Api
                     option.RequireHttpsMetadata = false;
                     option.ApiName = Configuration.GetSection("ApiKey")?.Value;
                 });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "Tourism.Api", 
+                    Version = "v1",
+                    Description="一个关于旅游项目的API"
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
             services.AddSingleton<ITravelInfoService, TravelInfoService>();
             services.AddSingleton<ISettingService, SettingService>();
             services.AddSingleton<ICouponService, CouponService>();
@@ -50,6 +63,12 @@ namespace Tourism.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tourism.Api V1");
+            });
 
             app.UseHttpsRedirection();
 
