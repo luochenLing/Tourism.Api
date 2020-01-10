@@ -63,9 +63,9 @@ namespace Tourism.Server
         }
 
         /// <summary>
-        /// 根据参数删除用户信息
+        /// 根据ID删除用户信息
         /// </summary>
-        /// <param name="query">查询条件</param>
+        /// <param name="Id">用户ID</param>
         /// <returns></returns>
         public async Task<int> DelCustomerInfoByIdAsync(string Id)
         {
@@ -87,7 +87,7 @@ namespace Tourism.Server
         }
 
         /// <summary>
-        /// 根据参数获取用户信息
+        /// 根据参数获取用户信息(可分页)
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -95,14 +95,62 @@ namespace Tourism.Server
         {
             try
             {
-                Expression<Func<User, bool>> selQuery = BuildQuery(query);
-
-                if (selQuery == null)
+                if (query == null)
                 {
                     _log.Error("GetCustomerInfoByQueryAsync's error：selQuery is not null");
                     throw new Exception("GetCustomerInfoByQueryAsync's error：selQuery is not null");
                 }
-                string sql = "SELECT * FROM `User` WHERE cId=@cId ORDER BY cId DESC LIMIT 0,10 ";
+                string sql = "SELECT * FROM `User` WHERE cId=@cId ";
+                if (query.CIdentity!=null) 
+                {
+                    sql += " AND cIdentity=@CIdentity";
+                }
+
+                if (!string.IsNullOrWhiteSpace(query.CName)) 
+                {
+                    sql += " AND cName=@CName";
+                }
+
+                if (!string.IsNullOrWhiteSpace(query.CEmail))
+                {
+                    sql += " AND cEmail=@CEmail";
+                }
+
+                if (!string.IsNullOrWhiteSpace(query.CPhone)) 
+                {
+                    sql += " AND cPhone=@CPhone";
+                }
+
+                if (query.CIdentity!=null)
+                {
+                    sql += " AND cIdNum=@CIdentity";
+                }
+
+                if (!string.IsNullOrWhiteSpace(query.CNickName))
+                {
+                    sql += " AND cNickName=@CNickName";
+                }
+
+                if (!string.IsNullOrWhiteSpace(query.CPasswd))
+                {
+                    sql += " AND cPasswd=@cPasswd";
+                }
+                if (!string.IsNullOrWhiteSpace(query.Sort))
+                {
+                    query.Sort = SqlHandler.ReplaceSQLChar(query.Sort);
+                    sql += $" ORDER BY {query.Sort}";
+                    if (!string.IsNullOrWhiteSpace(query.Order))
+                    {
+                        query.Order = SqlHandler.ReplaceSQLChar(query.Order);
+                        sql += $" {query.Order}";
+                    }
+                }
+
+                if (query.PageIndex != 0 && query.PageSize != 0)
+                {
+                    query.PageIndex = (query.PageIndex - 1) * query.PageSize;
+                    sql += $" LIMIT {query.PageIndex},{query.PageSize}";
+                }
                 var info = SetMapper(query);
                 var res = await _mysqlRespository.QueryListAsync(sql, info);
                 return res;
@@ -113,85 +161,6 @@ namespace Tourism.Server
                 throw;
             }
         }
-
-        ///// <summary>
-        ///// 根据参数获取用户信息（分页）
-        ///// </summary>
-        ///// <param name="query">查询实体</param>
-        ///// <param name="sort">排序字段</param>
-        ///// <param name="order">排序方式</param>
-        ///// <param name="totalCount">数据总数</param>
-        ///// <param name="pageIndex">页码</param>
-        ///// <param name="pageSize">每页数据条数</param>
-        ///// <param name="showCount">是否返回数据总数</param>
-        ///// <returns></returns>
-        //public async Task<List<User>> GetCustomerPageListByQueryAsync(UserQuery query, string sort, string order, int pageIndex = 0, int pageSize = 0, bool showCount = false)
-        //{
-        //    try
-        //    {
-        //        Expression<Func<User, bool>> selQuery = BuildQuery(query);
-        //        if (selQuery == null)
-        //        {
-        //            _log.Error("GetCustomerPageListByQueryAsync's error：selQuery is not null");
-        //            throw new Exception("GetCustomerPageListByQueryAsync's error：selQuery is not null");
-        //        }
-        //        return await _mysqlRespository.PageListByQueryAsync(selQuery, sort, order, pageIndex, pageSize, showCount).ToListAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _log.Error("GetCustomerPageListByQueryAsync method error:" + ex);
-        //        throw;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// 根据参数修改用户信息
-        ///// </summary>
-        ///// <param name="query">查询参数</param>
-        ///// <param name="updateData">修改信息</param>
-        ///// <returns></returns>
-        //public async Task<int> UpdateCustomerInfoByQueryAsync(UserQuery query, User updateData)
-        //{
-        //    try
-        //    {
-        //        Expression<Func<User, bool>> selQuery = BuildQuery(query);
-
-
-        //        if (selQuery == null)
-        //        {
-        //            _log.Error("UpdateCustomerInfoByQueryAsync's error：selQuery is not null");
-        //            throw new Exception("UpdateCustomerInfoByQueryAsync's error：selQuery is not null");
-        //        }
-        //        //不修改密码和用户身份标识
-        //        return await _mysqlRespository.UpdateAsync(selQuery, x => new User { CName = updateData.CName, CSex = updateData.CSex, CAge = updateData.CAge, CAddress = updateData.CAddress, CPhone = updateData.CPhone, CIdNum = updateData.CIdNum, CIdentity = updateData.CIdentity, CNickName = updateData.CNickName, CEmail = updateData.CEmail, CPic = updateData.CPic });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _log.Error("UpdateCustomerInfoByQueryAsync method error:" + ex);
-        //        return -1;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// 根据sql查询用户数据
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="sql">sql</param>
-        ///// <param name="sqlParams">sql的参数</param>
-        ///// <returns></returns>
-        //public async Task<List<User>> CustomerListBySqlQueryAsync(string sql, params object[] sqlParams)
-        //{
-        //    try
-        //    {
-        //        var res = await _mysqlRespository.OperatingDbBySqlQueryAsync<User>(sql, sqlParams);
-        //        return res;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _log.Error("CustomerListBySqlQueryAsync method error:" + ex);
-        //        throw;
-        //    }
-        //}
 
         /// <summary>
         /// 构建ef查询条件

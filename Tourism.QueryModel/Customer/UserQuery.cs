@@ -5,7 +5,7 @@ namespace Tourism.QueryModel
     /// <summary>
     /// 用户类
     /// </summary>
-    public class UserQuery
+    public class UserQuery:BaseQuery
     {
         /// <summary>
         /// 唯一用户GUID标识，可以用作业务身份标识

@@ -54,6 +54,7 @@ namespace Tourism.Api
             services.AddSingleton<ICouponService, CouponService>();
             services.AddSingleton<IAdministrativeAreaService, AdministrativeAreaService>();
             services.AddSingleton<IMediaInfoService, MediaInfoService>();
+            services.AddSingleton<ICustomerServer, CustomerServer>();
         }
 
 

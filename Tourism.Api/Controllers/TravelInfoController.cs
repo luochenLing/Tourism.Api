@@ -39,12 +39,6 @@ namespace Tourism.Api.Controllers
             _mediaInfoService = mediaInfoService;
         }
 
-        [HttpGet]
-        public string Index()
-        {
-            return "TravelInfo Page";
-        }
-
         /// <summary>
         /// 获取首页轮播图
         /// </summary>
