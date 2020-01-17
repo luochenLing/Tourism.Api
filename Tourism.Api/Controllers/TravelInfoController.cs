@@ -92,7 +92,7 @@ namespace Tourism.Api.Controllers
                 }
                 var url = _configurationManager.GetSection(ConfigEnum.MediaUrl.ToString());
                 var res = await _travelInfoService.GetTravelListByAreaAsync(areaName);
-                res.ToList().ForEach(x => x.Cover = url + "\\" + (x.Cover));
+                res.ToList().ForEach(x => x.Cover = $"{url}/{x.ProId}/{x.Cover}");
                 _result.code = (int)HttpStatusCode.OK;
                 _result.msg = "success";
                 _result.resultData = res.ToList();
@@ -133,7 +133,7 @@ namespace Tourism.Api.Controllers
                     ProType = proType
                 };
                 var res = await _travelInfoService.GetTravelInfoListAsync(query);
-                res.ToList().ForEach(x => x.Cover = url + "\\" + (x.Cover));
+                res.ToList().ForEach(x => x.Cover = $"{url}/{x.ProId}/{x.Cover}");
                 _result.code = (int)HttpStatusCode.OK;
                 _result.msg = "success";
                 if (proType == "4")
@@ -193,7 +193,7 @@ namespace Tourism.Api.Controllers
                     return BadRequest(_result);
                 }
                 var res = await _travelInfoService.GetTravelInfoListAsync(query);
-                res.ToList().ForEach(x => x.Cover = url + "\\" + (x.Cover));
+                res.ToList().ForEach(x => x.Cover = $"{url}/{x.ProId}/{x.Cover}");
                 _result.code = (int)HttpStatusCode.OK;
                 _result.msg = "success";
                 _result.resultData = res;
@@ -262,7 +262,7 @@ namespace Tourism.Api.Controllers
                 }
 
                 var res = await _travelInfoService.GetTravelInfoListAsync(travelQuery);
-                res.ToList().ForEach(x => x.Cover = url + "\\" + (x.Cover));
+                res.ToList().ForEach(x => x.Cover = $"{url}/{x.ProId}/{x.Cover}");
                 _result.code = (int)HttpStatusCode.OK;
                 _result.msg = "success";
                 _result.resultData = res.ToList();
@@ -366,7 +366,7 @@ namespace Tourism.Api.Controllers
                 });
                 if (!string.IsNullOrWhiteSpace(res.Cover))
                 {
-                    res.Cover = url + res.Cover;
+                    res.Cover =$"{url}/{res.ProId}/{res.Cover}";
                 }
                 _result.code = (int)HttpStatusCode.OK;
                 _result.msg = "success";
@@ -424,7 +424,6 @@ namespace Tourism.Api.Controllers
         /// <summary>
         /// 获取热门城市列表
         /// </summary>
-        /// <param name="proid"></param>
         /// <returns></returns>
         [HttpGet("GetHotCityListAsync")]
         public async Task<IActionResult> GetHotCityListAsync()
@@ -462,7 +461,7 @@ namespace Tourism.Api.Controllers
             {
                 var url = _configurationManager.GetSection(ConfigEnum.MediaUrl.ToString());
                 var res = await _mediaInfoService.GetMediaInfoListById(proId);
-                res.ToList().ForEach(x => x.MUrl = url + "\\" + (x.MUrl));
+                res.ToList().ForEach(x => x.MUrl = $"{url}/{x.MPid}/{x.MUrl}");
                 _result.code = (int)HttpStatusCode.OK;
                 _result.msg = "success";
                 _result.resultData = res;
@@ -479,7 +478,7 @@ namespace Tourism.Api.Controllers
         }
 
         /// <summary>
-        /// 根据产品ID查找媒体信息列表
+        /// 获取筛选条件
         /// </summary>
         /// <param name="proId"></param>
         /// <returns></returns>
