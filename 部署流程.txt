@@ -1,0 +1,23 @@
+1.打包生成文件夹，
+2.api日志:/mnt/share/publish/log/api
+   idp日志:/mnt/share/publish/log/idp 
+   api配置:/mnt/share/publish/conf/api/appsettings.json
+   idp配置:/mnt/share/publish/conf/idp/appsettings.json
+   	
+2.打开docker服务
+  命令:(需要到各自的发布目录下执行build)
+  api:
+      docker build -t tourism-api .
+      docker run -d --name tourism.api  -v /mnt/share/publish/conf/api/appsettings.json:/app/appsettings.json -v /mnt/share/publish/log/api:/app/log -p 8081:80 tourism-api
+  idp:
+      docker build -t tourism-idp .
+      docker run -d --name tourism.idp  -v /mnt/share/publish/conf/idp/appsettings.json:/app/appsettings.json -v /mnt/share/publish/log/idp:/app/log -p 8080:80 tourism-idp
+3.查看容器状态
+  docker ps 
+4.打开网站测试
+curl http://你的宿主机IP:8080/idp/Home
+
+curl http://你的宿主机IP:8081/swagger/index.html
+
+5.注意事项：
+部署之前先查看防火墙的对应端口是否打开，它们应该通过主机IP+主机端口进行交互的，这一点具体体现在api的配置文件上的授权服务地址检查

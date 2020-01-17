@@ -72,7 +72,7 @@ namespace Tourism.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tourism.Api V1");
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
