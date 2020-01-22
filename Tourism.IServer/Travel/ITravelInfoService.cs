@@ -32,8 +32,10 @@ namespace Tourism.IServer
         /// 根据地名查找产品详细信息
         /// </summary>
         /// <param name="areaCondition"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
-        Task<IEnumerable<TravelInfo>> GetTravelListByAreaAsync(string areaCondition);
+        Task<IEnumerable<TravelInfo>> GetTravelListByAreaAsync(string areaCondition, int pageIndex, int pageSize);
 
         /// <summary>
         /// 获取筛选条件

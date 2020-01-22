@@ -225,13 +225,18 @@ namespace Tourism.Server
         /// </summary>
         /// <param name="areaCondition"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<TravelInfo>> GetTravelListByAreaAsync(string areaCondition)
+        public async Task<IEnumerable<TravelInfo>> GetTravelListByAreaAsync(string areaCondition,int pageIndex,int pageSize)
         {
             try
             {
                 areaCondition = SqlHandler.ReplaceSQLChar(areaCondition);
                 areaCondition = $"%{areaCondition}%";
                 string sql = "SELECT * FROM TravelInfo WHERE country LIKE @areaCondition OR city LIKE @areaCondition OR area LIKE @areaCondition";
+                if (pageIndex != 0 && pageSize != 0)
+                {
+                    pageIndex = (pageIndex - 1) * pageSize;
+                    sql += $" LIMIT {pageIndex},{pageSize}";
+                }
                 var parameters = new DynamicParameters();
 
                 parameters.Add("@areaCondition", areaCondition);

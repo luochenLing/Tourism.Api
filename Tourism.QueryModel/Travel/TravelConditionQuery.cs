@@ -1,6 +1,6 @@
 ﻿namespace Tourism.QueryModel
 {
-    public class TravelConditionQuery
+    public class TravelConditionQuery:BaseQuery
     {
         /// <summary>
         /// 计划天数

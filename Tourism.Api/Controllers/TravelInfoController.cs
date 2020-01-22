@@ -77,8 +77,10 @@ namespace Tourism.Api.Controllers
         /// 根据地名查找商品列表
         /// </summary>
         /// <param name="areaName"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
         [HttpPost("GetTravelListByAreaAsync")]
-        public async Task<IActionResult> GetTravelListByAreaAsync(string areaName)
+        public async Task<IActionResult> GetTravelListByAreaAsync(string areaName, int pageSize = 10, int pageIndex = 1)
         {
             _result = new ResultObject<TravelInfo>();
             try
@@ -91,7 +93,7 @@ namespace Tourism.Api.Controllers
                     return BadRequest(_result);
                 }
                 var url = _configurationManager.GetSection(ConfigEnum.MediaUrl.ToString());
-                var res = await _travelInfoService.GetTravelListByAreaAsync(areaName);
+                var res = await _travelInfoService.GetTravelListByAreaAsync(areaName, pageIndex, pageSize);
                 res.ToList().ForEach(x => x.Cover = $"{url}/{x.ProId}/{x.Cover}");
                 _result.code = (int)HttpStatusCode.OK;
                 _result.msg = "success";
@@ -112,9 +114,11 @@ namespace Tourism.Api.Controllers
         /// 根据产品类型获取列表
         /// </summary>
         /// <param name="proType"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
         /// <returns></returns>
         [HttpPost("GetTravelInfoListByProTypeAsync")]
-        public async Task<IActionResult> GetTravelInfoListByProTypeAsync(string proType)
+        public async Task<IActionResult> GetTravelInfoListByProTypeAsync(string proType, int pageSize = 10, int pageIndex = 1)
         {
             _result = new ResultObject<TravelInfo>();
 
@@ -130,7 +134,9 @@ namespace Tourism.Api.Controllers
                 var url = _configurationManager.GetSection(ConfigEnum.MediaUrl.ToString());
                 var query = new TravelInfoQuery
                 {
-                    ProType = proType
+                    ProType = proType,
+                    PageIndex = pageIndex,
+                    PageSize = pageSize
                 };
                 var res = await _travelInfoService.GetTravelInfoListAsync(query);
                 res.ToList().ForEach(x => x.Cover = $"{url}/{x.ProId}/{x.Cover}");
@@ -161,9 +167,11 @@ namespace Tourism.Api.Controllers
         /// 根据国境标识获取产品列表
         /// </summary>
         /// <param name="frontier">0 境内 1 境外</param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
         /// <returns></returns>
         [HttpPost("GetTravelInfoListByFrontierAsync")]
-        public async Task<IActionResult> GetTravelInfoListByFrontierAsync(string frontier)
+        public async Task<IActionResult> GetTravelInfoListByFrontierAsync(string frontier, int pageSize = 10, int pageIndex = 1)
         {
             _result = new ResultObject<TravelInfo>();
             try
@@ -261,6 +269,9 @@ namespace Tourism.Api.Controllers
 
                 }
 
+                travelQuery.PageIndex = conditionQuery.PageIndex;
+                travelQuery.PageSize = conditionQuery.PageSize;
+
                 var res = await _travelInfoService.GetTravelInfoListAsync(travelQuery);
                 res.ToList().ForEach(x => x.Cover = $"{url}/{x.ProId}/{x.Cover}");
                 _result.code = (int)HttpStatusCode.OK;
@@ -282,13 +293,15 @@ namespace Tourism.Api.Controllers
         /// 获取相关产品列表
         /// </summary>
         /// <param name="areaName"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
         /// <returns></returns>
         [HttpPost("RelatedProductsAsync")]
-        public async Task<IActionResult> RelatedProductsAsync(string areaName)
+        public async Task<IActionResult> RelatedProductsAsync(string areaName, int pageSize = 10, int pageIndex = 1)
         {
             try
             {
-                return await GetTravelListByAreaAsync(areaName);
+                return await GetTravelListByAreaAsync(areaName, pageSize, pageIndex);
             }
             catch (Exception ex)
             {
@@ -366,7 +379,7 @@ namespace Tourism.Api.Controllers
                 });
                 if (!string.IsNullOrWhiteSpace(res.Cover))
                 {
-                    res.Cover =$"{url}/{res.ProId}/{res.Cover}";
+                    res.Cover = $"{url}/{res.ProId}/{res.Cover}";
                 }
                 _result.code = (int)HttpStatusCode.OK;
                 _result.msg = "success";
