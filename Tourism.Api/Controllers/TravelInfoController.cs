@@ -261,6 +261,11 @@ namespace Tourism.Api.Controllers
                         travelQuery.Order = "asc";
                         travelQuery.Sort = "proPrice";
                     }
+                    else if (conditionQuery.orderFiled == ConditionEnum.priceUp.ToString())
+                    {
+                        travelQuery.Order = "desc";
+                        travelQuery.Sort = "proPrice";
+                    }
                     else
                     {
                         travelQuery.Order = "desc";
@@ -493,10 +498,9 @@ namespace Tourism.Api.Controllers
         /// <summary>
         /// 获取筛选条件
         /// </summary>
-        /// <param name="proId"></param>
         /// <returns></returns>
         [HttpGet("GetTravelConditionListAsync")]
-        public async Task<IActionResult> GetTravelConditionListAsync(string proId)
+        public async Task<IActionResult> GetTravelConditionListAsync()
         {
             _result = new ResultObject<TravelCondition>();
             try
