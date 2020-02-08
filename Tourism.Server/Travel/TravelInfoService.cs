@@ -225,7 +225,7 @@ namespace Tourism.Server
         /// </summary>
         /// <param name="areaCondition"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<TravelInfo>> GetTravelListByAreaAsync(string areaCondition,int pageIndex,int pageSize)
+        public async Task<IEnumerable<TravelInfo>> GetTravelListByAreaAsync(string areaCondition, int pageIndex, int pageSize)
         {
             try
             {

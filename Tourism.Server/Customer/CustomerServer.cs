@@ -20,7 +20,7 @@ namespace Tourism.Server
         public CustomerServer()
         {
             _log = LogManager.GetLogger(typeof(CustomerServer));
-            _mysqlRespository = new MySqlRespostitoryByDapper(nameof(CustomerServer));
+            _mysqlRespository = new MySqlRespostitoryByDapper(DbNameEnum.CustomerService.ToString());
         }
 
         /// <summary>
@@ -100,13 +100,19 @@ namespace Tourism.Server
                     _log.Error("GetCustomerInfoByQueryAsync's error：selQuery is not null");
                     throw new Exception("GetCustomerInfoByQueryAsync's error：selQuery is not null");
                 }
-                string sql = "SELECT * FROM `User` WHERE cId=@cId ";
-                if (query.CIdentity!=null) 
+                string sql = "SELECT * FROM `User` WHERE 1=1 ";
+
+                if (query.CId != null)
+                {
+                    sql += " AND cId=@cId";
+                }
+
+                if (query.CIdentity != null)
                 {
                     sql += " AND cIdentity=@CIdentity";
                 }
 
-                if (!string.IsNullOrWhiteSpace(query.CName)) 
+                if (!string.IsNullOrWhiteSpace(query.CName))
                 {
                     sql += " AND cName=@CName";
                 }
@@ -116,12 +122,12 @@ namespace Tourism.Server
                     sql += " AND cEmail=@CEmail";
                 }
 
-                if (!string.IsNullOrWhiteSpace(query.CPhone)) 
+                if (!string.IsNullOrWhiteSpace(query.CPhone))
                 {
                     sql += " AND cPhone=@CPhone";
                 }
 
-                if (query.CIdentity!=null)
+                if (query.CIdentity != null)
                 {
                     sql += " AND cIdNum=@CIdentity";
                 }
@@ -158,6 +164,43 @@ namespace Tourism.Server
             catch (Exception ex)
             {
                 _log.Error("GetCustomerInfoByQueryAsync method error:" + ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <param name="query">查询条件，只包括账号密码即可</param>
+        /// <returns></returns>
+        public async Task<User> UserLogin(UserQuery query) 
+        {
+            try
+            {
+                if (query == null)
+                {
+                    _log.Error("UserLogin's error：selQuery is not null");
+                    throw new Exception("UserLogin's error：selQuery is not null");
+                }
+                string sql = "SELECT cId,cName,cSex,cAge,cPhone,cNickName,cPic FROM `User` WHERE 1=1 ";
+               
+                if (!string.IsNullOrWhiteSpace(query.CName))
+                {
+                    sql += " AND cName=@CName OR cEmail=@CName  OR cPhone";
+                }
+
+                if (!string.IsNullOrWhiteSpace(query.CPasswd))
+                {
+                    sql += " AND cPasswd=@cPasswd";
+                }
+               
+                var info = SetMapper(query);
+                var res = await _mysqlRespository.QueryInfoAsync(sql, info);
+                return res;
+            }
+            catch (Exception ex)
+            {
+                _log.Error("UserLogin method error:" + ex);
                 throw;
             }
         }

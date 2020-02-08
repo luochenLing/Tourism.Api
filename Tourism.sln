@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourism.Test", "Tourism.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourism.Api", "Tourism.Api\Tourism.Api.csproj", "{580F135C-1C06-48B1-86A8-6F304A04FE1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tourism.Idp", "Tourism.Idp\Tourism.Idp.csproj", "{4528654D-5FA0-41B5-9894-EF39F265A366}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tourism.Idp", "Tourism.Idp\Tourism.Idp.csproj", "{4528654D-5FA0-41B5-9894-EF39F265A366}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tourism.WebsocketServer", "Tourism.WebsocketServer\Tourism.WebsocketServer.csproj", "{A7F0A193-C9EB-4ED4-B487-1A25A5E1B091}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{4528654D-5FA0-41B5-9894-EF39F265A366}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4528654D-5FA0-41B5-9894-EF39F265A366}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4528654D-5FA0-41B5-9894-EF39F265A366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7F0A193-C9EB-4ED4-B487-1A25A5E1B091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7F0A193-C9EB-4ED4-B487-1A25A5E1B091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7F0A193-C9EB-4ED4-B487-1A25A5E1B091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7F0A193-C9EB-4ED4-B487-1A25A5E1B091}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

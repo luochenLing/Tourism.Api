@@ -27,13 +27,20 @@ namespace Tourism.IServer
         /// <param name="Id">用户ID</param>
         /// <returns></returns>
         Task<int> DelCustomerInfoByIdAsync(string Id);
-   
+
         /// <summary>
         /// 根据参数获取用户信息(可分页)
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
         Task<IEnumerable<User>> GetCustomerInfoByQueryAsync(UserQuery query);
-        
+
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <param name="query">查询条件，只包括账号密码即可</param>
+        /// <returns></returns>
+        Task<User> UserLogin(UserQuery query);
+
     }
 }

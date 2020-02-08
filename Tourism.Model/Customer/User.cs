@@ -14,7 +14,7 @@ namespace Tourism.Model
         /// 唯一用户GUID标识，可以用作业务身份标识
         /// </summary>
         [Key]
-        public Guid CId { get; set; }
+        public Guid? CId { get; set; }
 
         /// <summary>
         /// 客户姓名

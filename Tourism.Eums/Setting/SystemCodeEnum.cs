@@ -2,6 +2,9 @@
 {
     public enum SystemCodeEnum
     {
-        Travel
+        Travel,
+        //tokenName
+        P00002,
+        uid
     }
 }

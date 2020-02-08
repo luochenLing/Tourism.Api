@@ -1,8 +1,8 @@
 ﻿namespace Tourism.Api.Model
 {
-    public class ResultObject<T> where T : class
+    public class ResultObject
     {
-        public int code { get; set; }
+        public int status { get; set; }
 
         public string msg { get; set; }
 

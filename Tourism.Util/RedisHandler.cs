@@ -15,7 +15,7 @@ namespace Tourism.Util
         {
             _log = LogManager.GetLogger(typeof(RedisHandler));
             _config = new ConfigurationManager();
-            var redis = ConnectionMultiplexer.Connect(_config.GetConnectionString("CacheConnStr"));
+            var redis = ConnectionMultiplexer.Connect(_config.GetConnectionString("CacheServer"));
             _db = redis.GetDatabase();
         }
 
@@ -55,6 +55,19 @@ namespace Tourism.Util
             catch (Exception ex)
             {
                 _log.Error("GetAsync method error:" + ex);
+                throw;
+            }
+        }
+
+        public async Task<bool> DelAsync(RedisKey key)
+        {
+            try
+            {
+                return await _db.KeyDeleteAsync(key);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("DelAsync method error:" + ex);
                 throw;
             }
         }
