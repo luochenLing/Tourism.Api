@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using log4net;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Net.WebSockets;
@@ -10,11 +11,13 @@ namespace Tourism.WebsocketServer.Utils
 {
     public abstract class WebSocketHandler
     {
+        private ILog _log;
         protected ConnectionManager WebSocketConnectionManager { get; set; }
 
         public WebSocketHandler(ConnectionManager webSocketConnectionManager)
         {
             WebSocketConnectionManager = webSocketConnectionManager;
+            _log = LogManager.GetLogger(typeof(WebSocketHandler));
         }
 
         public virtual async Task OnConnected(string senderId, WebSocket socket)
@@ -29,17 +32,25 @@ namespace Tourism.WebsocketServer.Utils
 
         public async Task SendMessageAsync(WebSocket socket, string message)
         {
-            if (socket.State != WebSocketState.Open)
+            try
             {
-                return;
-            }
+                if (socket.State != WebSocketState.Open)
+                {
+                    return;
+                }
 
-            await socket.SendAsync(
-                buffer: new ArraySegment<byte>(
-                    array: Encoding.UTF8.GetBytes(message)),
-                messageType: WebSocketMessageType.Text,
-                endOfMessage: true,
-                cancellationToken: CancellationToken.None);
+                await socket.SendAsync(
+                    buffer: new ArraySegment<byte>(
+                        array: Encoding.UTF8.GetBytes(message)),
+                    messageType: WebSocketMessageType.Text,
+                    endOfMessage: true,
+                    cancellationToken: CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("SendMessageAsync method error:" + ex);
+                throw;
+            }
         }
 
         public async Task SendMessageAsync(string socketId, string message)
@@ -49,30 +60,37 @@ namespace Tourism.WebsocketServer.Utils
 
         public async Task SendMessageToAllAsync(string socketId, string msg,bool isObj=true)
         {
-            foreach (var pair in WebSocketConnectionManager.GetAll())
+            try
             {
-                if (isObj)
+                foreach (var pair in WebSocketConnectionManager.GetAll())
                 {
-                    var msgTemplate = JsonConvert.DeserializeObject<MsgTemplate>(msg);
-                    if (pair.Value.State == WebSocketState.Open)
+                    if (isObj)
                     {
-                        if (pair.Key == msgTemplate.ReceiverID || pair.Key == socketId)
+                        var msgTemplate = JsonConvert.DeserializeObject<MsgTemplate>(msg);
+                        if (pair.Value.State == WebSocketState.Open)
                         {
-                            await SendMessageAsync(pair.Value, msg);
+                            if (pair.Key == msgTemplate.ReceiverID || pair.Key == socketId)
+                            {
+                                await SendMessageAsync(pair.Value, msg);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (pair.Value.State == WebSocketState.Open)
+                        {
+                            if (pair.Key == socketId)
+                            {
+                                await SendMessageAsync(pair.Value, msg);
+                            }
                         }
                     }
                 }
-                else 
-                {
-                    if (pair.Value.State == WebSocketState.Open)
-                    {
-                        if (pair.Key == socketId)
-                        {
-                            await SendMessageAsync(pair.Value, msg);
-                        }
-                    }
-                }
-               
+            }
+            catch (Exception ex)
+            {
+                _log.Error("SendMessageToAllAsync method error:" + ex);
+                throw;
             }
         }
 

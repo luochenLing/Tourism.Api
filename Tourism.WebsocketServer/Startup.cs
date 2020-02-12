@@ -1,3 +1,5 @@
+using log4net;
+using log4net.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
@@ -6,7 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
 using System.Net.WebSockets;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Tourism.WebsocketServer.Utils;
@@ -18,6 +22,8 @@ namespace Tourism.WebsocketServer
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
         }
 
         public IConfiguration Configuration { get; }
@@ -45,7 +51,6 @@ namespace Tourism.WebsocketServer
 
             app.UseAuthorization();
 
-            //app.UseWebSockets();
             app.UseWebSockets(new WebSocketOptions()
             {
                 //KeepAliveInterval - 向客户端发送“ping”帧的频率，以确保代理保持连接处于打开状态。 默认值为 2 分钟。

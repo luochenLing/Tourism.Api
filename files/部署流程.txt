@@ -12,6 +12,9 @@
   idp:
       docker build -t tourism.idp .
       docker run -d --name tourism-idp  -v /mnt/share/publish/conf/idp/appsettings.json:/app/appsettings.json -v /mnt/share/publish/log/idp:/app/log -p 8080:80 tourism.idp
+  websocketServer:
+      docker build -t tourism.websocketserver.
+      docker run -d --name tourism-websocketserver -v /mnt/share/publish/conf/websocketserver/appsettings.json:/app/appsettings.json -v /mnt/share/publish/log/websocketserver:/app/log -p 8083:80 tourism.websocketserver
 3.查看容器状态
   docker ps 
 4.打开网站测试
@@ -19,5 +22,32 @@ curl http://你的宿主机IP:8080/idp/Home
 
 curl http://你的宿主机IP:8081/swagger/index.html
 
+curl http://你的宿主机IP:8083/WeatherForecast
+
 5.注意事项：
 部署之前先查看防火墙的对应端口是否打开，它们应该通过主机IP+主机端口进行交互的，这一点具体体现在api的配置文件上的授权服务地址检查
+
+6.nginx部署示例：
+               server {
+		listen 8082;
+		server_name localhost;
+		location /{
+			root E:/DevSoft/nginx-1.17.7/html/dist;
+			index index.html index.htm;
+			#不写这句,history模式请求路由会变成直接请求后台的路由导致404
+			try_files $uri $uri/ /index.html;
+			autoindex on;
+		}
+		#反向代理，解决跨域问题，不配置的话也容易出现405的问题
+		location ~/api/{
+			proxy_pass http://192.168.150.129:8081;
+		}
+		
+		location ~/connect/token{
+			proxy_pass http://192.168.150.129:8080;
+		}
+		
+		#location ~/ws{
+		#	proxy_pass http://localhost:56586/;
+		#}
+	}
