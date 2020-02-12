@@ -3,6 +3,7 @@ using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Tourism.Eums;
 
 namespace Tourism.Util
 {
@@ -15,7 +16,7 @@ namespace Tourism.Util
         {
             _log = LogManager.GetLogger(typeof(RedisHandler));
             _config = new ConfigurationManager();
-            var redis = ConnectionMultiplexer.Connect(_config.GetConnectionString("CacheServer"));
+            var redis = ConnectionMultiplexer.Connect(_config.GetConnectionString(DbNameEnum.CacheServer.ToString()));
             _db = redis.GetDatabase();
         }
 

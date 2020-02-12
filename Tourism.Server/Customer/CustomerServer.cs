@@ -173,7 +173,7 @@ namespace Tourism.Server
         /// </summary>
         /// <param name="query">查询条件，只包括账号密码即可</param>
         /// <returns></returns>
-        public async Task<User> UserLogin(UserQuery query) 
+        public async Task<User> UserLogin(UserQuery query)
         {
             try
             {
@@ -183,17 +183,17 @@ namespace Tourism.Server
                     throw new Exception("UserLogin's error：selQuery is not null");
                 }
                 string sql = "SELECT cId,cName,cSex,cAge,cPhone,cNickName,cPic FROM `User` WHERE 1=1 ";
-               
+
                 if (!string.IsNullOrWhiteSpace(query.CName))
                 {
-                    sql += " AND cName=@CName OR cEmail=@CName  OR cPhone";
+                    sql += " AND cName=@CName OR cEmail=@CName OR cPhone=@CName";
                 }
 
                 if (!string.IsNullOrWhiteSpace(query.CPasswd))
                 {
                     sql += " AND cPasswd=@cPasswd";
                 }
-               
+
                 var info = SetMapper(query);
                 var res = await _mysqlRespository.QueryInfoAsync(sql, info);
                 return res;

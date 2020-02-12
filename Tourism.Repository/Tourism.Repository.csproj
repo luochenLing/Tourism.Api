@@ -8,8 +8,8 @@
     <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.30" />
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="MongoDB.Driver" Version="2.10.0" />
-    <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="3.0.31" />
+    <PackageReference Include="MongoDB.Driver" Version="2.10.1" />
+    <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="3.0.44" />
   </ItemGroup>
 
   <ItemGroup>

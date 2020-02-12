@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -15,9 +17,9 @@ namespace Tourism.WebsocketServer.Utils
             WebSocketConnectionManager = webSocketConnectionManager;
         }
 
-        public virtual async Task OnConnected(WebSocket socket)
+        public virtual async Task OnConnected(string senderId, WebSocket socket)
         {
-            WebSocketConnectionManager.AddSocket(socket);
+            WebSocketConnectionManager.AddSocket(senderId, socket);
         }
 
         public virtual async Task OnDisconnected(WebSocket socket)
@@ -34,9 +36,7 @@ namespace Tourism.WebsocketServer.Utils
 
             await socket.SendAsync(
                 buffer: new ArraySegment<byte>(
-                    array: Encoding.UTF8.GetBytes(message),
-                    offset: 0,
-                    count: message.Length),
+                    array: Encoding.UTF8.GetBytes(message)),
                 messageType: WebSocketMessageType.Text,
                 endOfMessage: true,
                 cancellationToken: CancellationToken.None);
@@ -47,17 +47,35 @@ namespace Tourism.WebsocketServer.Utils
             await SendMessageAsync(WebSocketConnectionManager.GetSocketById(socketId), message);
         }
 
-        public async Task SendMessageToAllAsync(string message)
+        public async Task SendMessageToAllAsync(string socketId, string msg,bool isObj=true)
         {
             foreach (var pair in WebSocketConnectionManager.GetAll())
             {
-                if (pair.Value.State == WebSocketState.Open)
+                if (isObj)
                 {
-                    await SendMessageAsync(pair.Value, message);
+                    var msgTemplate = JsonConvert.DeserializeObject<MsgTemplate>(msg);
+                    if (pair.Value.State == WebSocketState.Open)
+                    {
+                        if (pair.Key == msgTemplate.ReceiverID || pair.Key == socketId)
+                        {
+                            await SendMessageAsync(pair.Value, msg);
+                        }
+                    }
                 }
+                else 
+                {
+                    if (pair.Value.State == WebSocketState.Open)
+                    {
+                        if (pair.Key == socketId)
+                        {
+                            await SendMessageAsync(pair.Value, msg);
+                        }
+                    }
+                }
+               
             }
         }
 
-        public abstract Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer);
+        public abstract Task ReceiveAsync(WebSocket socket,WebSocketReceiveResult result, byte[] buffer);
     }
 }

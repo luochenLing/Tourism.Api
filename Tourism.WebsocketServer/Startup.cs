@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +45,14 @@ namespace Tourism.WebsocketServer
 
             app.UseAuthorization();
 
-            app.UseWebSockets();
+            //app.UseWebSockets();
+            app.UseWebSockets(new WebSocketOptions()
+            {
+                //KeepAliveInterval - 向客户端发送“ping”帧的频率，以确保代理保持连接处于打开状态。 默认值为 2 分钟。
+                KeepAliveInterval = TimeSpan.FromSeconds(120),
+                //ReceiveBufferSize - 用于接收数据的缓冲区的大小。 高级用户可能需要对其进行更改，以便根据数据大小调整性能。 默认值为 4 KB。
+                ReceiveBufferSize = 4 * 1024
+            });
 
             app.UseSession();
             var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
@@ -52,18 +60,12 @@ namespace Tourism.WebsocketServer
 
             app.MapWebSocketManager("/ws", serviceProvider.GetService<ChatMessageHandler>());
 
-            //app.UseCookiePolicy(new CookiePolicyOptions 
-            //{ 
-            //    HttpOnly= HttpOnlyPolicy.Always
+            //app.UseCookiePolicy(new CookiePolicyOptions
+            //{
+            //    HttpOnly = HttpOnlyPolicy.Always
             //});
 
-            //app.UseWebSockets(new WebSocketOptions()
-            //{
-            //    //KeepAliveInterval - 向客户端发送“ping”帧的频率，以确保代理保持连接处于打开状态。 默认值为 2 分钟。
-            //    KeepAliveInterval = TimeSpan.FromSeconds(120),
-            //    //ReceiveBufferSize - 用于接收数据的缓冲区的大小。 高级用户可能需要对其进行更改，以便根据数据大小调整性能。 默认值为 4 KB。
-            //    ReceiveBufferSize = 4 * 1024
-            //});
+
             ////app.UseMiddleware<ChatWebSocketMiddleware>();
 
             //app.Use(async (context, next) =>

@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Linq;
-using Tourism.Eums;
 using Tourism.Util;
 
 namespace Tourism.Api.Attributes
@@ -23,7 +21,7 @@ namespace Tourism.Api.Attributes
             try
             {
                 var ret = UserManager.CheckUserIdentity(context.HttpContext);
-                if (!ret) 
+                if (!ret)
                 {
                     context.Result = new UnauthorizedResult();
                 }

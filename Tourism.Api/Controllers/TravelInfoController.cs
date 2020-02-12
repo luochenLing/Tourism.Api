@@ -5,11 +5,9 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Tourism.Api.Attributes;
 using Tourism.Api.Model;
 using Tourism.Eums;
 using Tourism.IServer;
-using Tourism.Model;
 using Tourism.QueryModel;
 using Tourism.Util;
 

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Net.WebSockets;
@@ -26,9 +26,14 @@ namespace Tourism.WebsocketServer.Utils
             return _sockets.FirstOrDefault(p => p.Value == socket).Key;
         }
 
-        public void AddSocket(WebSocket socket)
+        public void AddSocket(string senderId, WebSocket socket)
         {
-            _sockets.TryAdd(CreateConnectionId(), socket);
+            if (!_sockets.ContainsKey(senderId))
+            {
+                _sockets.TryAdd(senderId, socket);
+            }
+            //_sockets.TryAdd("f3f13528293b4c6bb8186305c37e8668", socket);
+            //_sockets.TryAdd("f3f13537293b4c6bb8186305c37e8668", socket);
         }
 
         public async Task RemoveSocket(string id)
@@ -41,9 +46,9 @@ namespace Tourism.WebsocketServer.Utils
                 cancellationToken: CancellationToken.None);
         }
 
-        private string CreateConnectionId()
-        {
-            return Guid.NewGuid().ToString();
-        }
+        //private string CreateConnectionId()
+        //{
+        //    return Guid.NewGuid().ToString();
+        //}
     }
 }

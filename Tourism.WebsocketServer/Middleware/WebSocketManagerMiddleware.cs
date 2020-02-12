@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Net.WebSockets;
 using System.Threading;
@@ -27,7 +28,9 @@ namespace Tourism.WebsocketServer.Middleware
             }
 
             var socket = await context.WebSockets.AcceptWebSocketAsync();
-            await _webSocketHandler.OnConnected(socket);
+            
+            string senderId = context.Request.Query["sid"];
+            await _webSocketHandler.OnConnected(senderId, socket);
 
             await Receive(socket, async (result, buffer) =>
             {

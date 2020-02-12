@@ -6,6 +6,7 @@
         CommonService,
         CustomerService,
         MongodServer,
-        MediaServer
+        MediaServer,
+        CacheServer
     }
 }

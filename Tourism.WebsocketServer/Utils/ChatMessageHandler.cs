@@ -1,4 +1,6 @@
-﻿using System.Net.WebSockets;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,21 +13,26 @@ namespace Tourism.WebsocketServer.Utils
 
         }
 
-        public override async Task OnConnected(WebSocket socket)
+        public override async Task OnConnected(string senderId, WebSocket socket)
         {
-            await base.OnConnected(socket);
+          
+            await base.OnConnected(senderId, socket);
 
             var socketId = WebSocketConnectionManager.GetId(socket);
 
-            await SendMessageToAllAsync($"{socketId} is now connected");
+            //var msg = $"{socketId} is now connected";
+
+
+            //await SendMessageToAllAsync(socketId, msg,false);
         }
 
-        public override async Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+        public override async Task ReceiveAsync(WebSocket socket,WebSocketReceiveResult result, byte[] buffer)
         {
             var socketId = WebSocketConnectionManager.GetId(socket);
-            var message = $"{socketId} said: {Encoding.UTF8.GetString(buffer, 0, result.Count)}";
 
-            await SendMessageToAllAsync(message);
+            var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
+
+            await SendMessageToAllAsync(socketId, message);
         }
 
     }

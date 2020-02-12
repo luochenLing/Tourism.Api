@@ -22,8 +22,8 @@ using Tourism.Util;
 namespace Tourism.Api.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class CustomerController : ControllerBase
     {
         private readonly ILog _log;
@@ -33,11 +33,18 @@ namespace Tourism.Api.Controllers
         private RedisHandler _redis;
         public CustomerController(ICustomerServer customerServer, IConfiguration configuration)
         {
-            _log = LogManager.GetLogger(typeof(CustomerController));
-            _customerServer = customerServer;
-            _configuration = configuration;
-            _redis = new RedisHandler();
-            _result = new ResultObject();
+            try
+            {
+                _log = LogManager.GetLogger(typeof(CustomerController));
+                _customerServer = customerServer;
+                _configuration = configuration;
+                _redis = new RedisHandler();
+                _result = new ResultObject();
+            }
+            catch (Exception ex)
+            {
+                _log.Error("CustomerController method error:" + ex);
+            }
         }
 
         /// <summary>
@@ -265,6 +272,7 @@ namespace Tourism.Api.Controllers
         {
             try
             {
+                _log.Info("CheckUserIdentity is running");
                 var ret = UserManager.CheckUserIdentity(HttpContext);
                 _result.status = (int)HttpStatusCode.OK;
                 _result.msg = "success";

@@ -1,10 +1,7 @@
 ﻿using log4net;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using Tourism.Eums;
 
 namespace Tourism.Util
@@ -12,17 +9,18 @@ namespace Tourism.Util
     public class UserManager
     {
         private static ILog _log;
-           
-        public static bool CheckUserIdentity(HttpContext context) 
+
+        public static bool CheckUserIdentity(HttpContext context)
         {
-            if(_log==null) 
+            if (_log == null)
             {
                 _log = LogManager.GetLogger(typeof(UserManager));
             }
-            
+
             RedisHandler redis = new RedisHandler();
             try
             {
+
                 var tokenName = context.Request.Cookies.Where(t => t.Key == SystemCodeEnum.P00002.ToString()).FirstOrDefault().Value;
                 var userId = context.Request.Cookies.Where(t => t.Key == SystemCodeEnum.uid.ToString()).FirstOrDefault().Value;
                 string val = string.Empty;
@@ -30,11 +28,11 @@ namespace Tourism.Util
                 {
                     val = redis.GetAsync(userId).GetAwaiter().GetResult();
                 }
-                else 
+                else
                 {
                     return false;
                 }
-                if (string.IsNullOrWhiteSpace(tokenName)) 
+                if (string.IsNullOrWhiteSpace(tokenName))
                 {
                     return false;
                 }

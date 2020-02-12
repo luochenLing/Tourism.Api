@@ -7,11 +7,11 @@
 2.打开docker服务
   命令:(需要到各自的发布目录下执行build)
   api:
-      docker build -t tourism-api .
-      docker run -d --name tourism.api  -v /mnt/share/publish/conf/api/appsettings.json:/app/appsettings.json -v /mnt/share/publish/log/api:/app/log -p 8081:80 tourism-api
+      docker build -t tourism.api .
+      docker run -d --name tourism-api  -v /mnt/share/publish/conf/api/appsettings.json:/app/appsettings.json -v /mnt/share/publish/log/api:/app/log -p 8081:80 tourism.api
   idp:
-      docker build -t tourism-idp .
-      docker run -d --name tourism.idp  -v /mnt/share/publish/conf/idp/appsettings.json:/app/appsettings.json -v /mnt/share/publish/log/idp:/app/log -p 8080:80 tourism-idp
+      docker build -t tourism.idp .
+      docker run -d --name tourism-idp  -v /mnt/share/publish/conf/idp/appsettings.json:/app/appsettings.json -v /mnt/share/publish/log/idp:/app/log -p 8080:80 tourism.idp
 3.查看容器状态
   docker ps 
 4.打开网站测试
