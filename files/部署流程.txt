@@ -47,7 +47,10 @@ curl http://你的宿主机IP:8083/WeatherForecast
 			proxy_pass http://192.168.150.129:8080;
 		}
 		
-		#location ~/ws{
-		#	proxy_pass http://localhost:56586/;
-		#}
+		location ~/ws{
+			proxy_pass http://192.168.150.129:8083;
+			#启动websocket
+			proxy_set_header Upgrade $http_upgrade;
+			proxy_set_header Connection "upgrade";
+		}
 	}
